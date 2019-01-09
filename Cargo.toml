@@ -1,0 +1,14 @@
+[package]
+name = "libtirpc-sys"
+version = "0.1.0"
+authors = ["Dror Levin <spatz@psybear.com>"]
+description = "Low-level bindings for the libtirpc library."
+repository = "https://github.com/drrlvn/libtirpc-sys"
+license = "BSD-3-Clause"
+edition = "2018"
+
+[dependencies]
+
+[build-dependencies]
+bindgen = "0.46.0"
+lazy_static = "1.2.0"

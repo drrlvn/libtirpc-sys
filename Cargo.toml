@@ -1,6 +1,6 @@
 [package]
 name = "libtirpc-sys"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["Dror Levin <spatz@psybear.com>"]
 description = "Low-level bindings for the libtirpc library."
 repository = "https://github.com/drrlvn/libtirpc-sys"

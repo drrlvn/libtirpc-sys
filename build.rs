@@ -24,7 +24,8 @@ fn download_and_extract() {
 
 fn configure() {
     let mut cmd = Command::new("./configure");
-    cmd.arg(format!("--prefix={}", LIBTIRPC_OUTPUT_DIR.display()));
+    cmd.arg(format!("--prefix={}", LIBTIRPC_OUTPUT_DIR.display()))
+        .arg("--disable-gssapi");
     run(cmd, &*LIBTIRPC_DIR);
 }
 
@@ -43,17 +44,18 @@ fn main() {
     if !LIBTIRPC_DIR.exists() {
         download_and_extract();
     }
-    if !LIBTIRPC_OUTPUT_DIR.join("lib/libtirpc.a").exists() {
+
+    if !LIBTIRPC_DIR.join("Makefile").exists() {
         configure();
-        make();
-        install();
     }
+    make();
+    install();
 
     println!(
         "cargo:rustc-link-search=native={}/lib",
         LIBTIRPC_OUTPUT_DIR.display()
     );
-    println!("cargo:rustc-link-lib=tirpc");
+    println!("cargo:rustc-link-lib=static=tirpc");
 
     bindgen::Builder::default()
         .header(LIBTIRPC_DIR.join("tirpc/rpc/rpc.h").display().to_string())

@@ -3,7 +3,7 @@ use std::env;
 use std::path::{Path, PathBuf};
 use std::process::Command;
 
-const LIBTIRPC_VERSION: &str = "1.1.4";
+const LIBTIRPC_VERSION: &str = "1.2.5";
 lazy_static! {
     static ref OUT_DIR: PathBuf = PathBuf::from(env::var("OUT_DIR").unwrap());
     static ref LIBTIRPC_DIR: PathBuf = OUT_DIR.join(format!("libtirpc-{}", LIBTIRPC_VERSION));
@@ -60,6 +60,15 @@ fn main() {
     bindgen::Builder::default()
         .header(LIBTIRPC_DIR.join("tirpc/rpc/rpc.h").display().to_string())
         .blacklist_type("rpcblist")
+        // Following are unsupported because of usage u128
+        .blacklist_function("xdr_quadruple")
+        .blacklist_function("strtold")
+        .blacklist_type("_Float64x")
+        .blacklist_function("qecvt_r")
+        .blacklist_function("qfcvt_r")
+        .blacklist_function("qecvt")
+        .blacklist_function("qfcvt")
+        .blacklist_function("qgcvt")
         .clang_arg(format!("-I{}/tirpc", LIBTIRPC_DIR.display()))
         .generate()
         .expect("Unable to generate bindings")
